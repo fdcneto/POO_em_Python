@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introdução à POO em Python - Guia Completo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary: #059669;
+            --secondary-dark: #047857;
+            --accent: #dc2626;
+            --accent-light: #ef4444;
+            --success: #16a34a;
+            --warning: #d97706;
+            --error: #dc2626;
+            
+            --neutral-50: #f8fafc;
+            --neutral-100: #f1f5f9;
+            --neutral-200: #e2e8f0;
+            --neutral-300: #cbd5e1;
+            --neutral-400: #94a3b8;
+            --neutral-500: #64748b;
+            --neutral-600: #475569;
+            --neutral-700: #334155;
+            --neutral-800: #1e293b;
+            --neutral-900: #0f172a;
+            
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            --font-mono: 'JetBrains Mono', 'Fira Code', Menlo, Monaco, Consolas, monospace;
+            
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            
+            --radius-sm: 0.375rem;
+            --radius: 0.5rem;
+            --radius-md: 0.75rem;
+            --radius-lg: 1rem;
+            --radius-xl: 1.5rem;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            font-family: var(--font-sans);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--neutral-900);
+            line-height: 1.7;
+            min-height: 100vh;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Skip to content link for accessibility */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: var(--neutral-900);
+            color: white;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: var(--radius);
+            z-index: 1000;
+            font-weight: 500;
+        }
+        
+        .skip-link:focus {
+            top: 6px;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, var(--neutral-900) 0%, var(--neutral-800) 100%);
+            color: white;
+            text-align: center;
+            padding: 4rem 2rem;
+            border-radius: var(--radius-xl);
+            margin-bottom: 3rem;
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.03) 50%, transparent 70%);
+        }
+        
+        .header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header .subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            opacity: 0.9;
+            font-weight: 400;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Navigation breadcrumb */
+        .breadcrumb {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+            color: var(--neutral-600);
+            border: 1px solid var(--neutral-200);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        /* Section styling */
+        .section {
+            background: white;
+            margin: 2.5rem 0;
+            padding: 3rem;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--neutral-200);
+            position: relative;
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--primary), var(--primary-light));
+            border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+        }
+        
+        .section h2 {
+            color: var(--neutral-900);
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 600;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--neutral-100);
+        }
+        
+        .section h3 {
+            color: var(--neutral-800);
+            font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+        }
+        
+        .section p {
+            margin-bottom: 1.5rem;
+            color: var(--neutral-700);
+            max-width: 65ch;
+        }
+        
+        .section ul, .section ol {
+            margin: 1.5rem 0;
+            padding-left: 1.5rem;
+        }
+        
+        .section li {
+            margin-bottom: 0.5rem;
+            color: var(--neutral-700);
+        }
+        
+        /* Emoji styling */
+        .emoji {
+            font-size: 1.2em;
+            margin-right: 0.5rem;
+            display: inline-block;
+        }
+        
+        /* Code blocks */
+        .code-block {
+            background: var(--neutral-900);
+            color: var(--neutral-100);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            position: relative;
+            border: 1px solid var(--neutral-700);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            box-shadow: var(--shadow);
+        }
+        
+        .code-block::before {
+            content: "💻 Código Python";
+            position: absolute;
+            top: -12px;
+            left: 1rem;
+            background: var(--accent);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: var(--radius);
+            font-size: 0.8rem;
+            font-weight: 500;
+            font-family: var(--font-sans);
+        }
+        
+        /* Grid layouts */
+        .concepts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .concept-card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--neutral-200);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .concept-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--primary-light);
+        }
+        
+        .concept-card h3 {
+            color: var(--neutral-900);
+            margin-top: 0;
+        }
+        
+        /* Highlights and emphasis */
+        .highlight {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 0.2rem 0.4rem;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+        
+        /* Special sections */
+        .analogy {
+            background: linear-gradient(120deg, #f3e8ff 0%, #fef7cd 100%);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            margin: 2rem 0;
+            border: 2px solid var(--primary-light);
+            border-left: 6px solid var(--primary);
+        }
+        
+        .analogy h3 {
+            color: var(--neutral-900);
+            margin-top: 0;
+        }
+        
+        .step {
+            background: white;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--success);
+            box-shadow: var(--shadow);
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background: var(--success);
+            color: white;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .concept-item {
+            background: #f0f9ff;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: var(--radius-lg);
+            border-left: 4px solid var(--primary);
+            border: 1px solid #bfdbfe;
+        }
+        
+        .memory-visual {
+            background: var(--neutral-800);
+            color: var(--neutral-100);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            margin: 1.5rem 0;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            border: 1px solid var(--neutral-600);
+        }
+        
+        /* Comparison section */
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .comparison-item {
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid;
+        }
+        
+        .without-poo {
+            background: #fef2f2;
+            border-color: #fca5a5;
+            border-left: 6px solid var(--error);
+        }
+        
+        .with-poo {
+            background: #f0fdf4;
+            border-color: #86efac;
+            border-left: 6px solid var(--success);
+        }
+        
+        /* Lists */
+        .advantage-list {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+        
+        .advantage-list li {
+            padding: 1rem;
+            border-bottom: 1px solid var(--neutral-200);
+            font-size: 1.05rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        
+        .advantage-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .advantage-list li::before {
+            content: "✅";
+            font-size: 1.2em;
+            flex-shrink: 0;
+        }
+        
+        /* Interactive demo */
+        .interactive-demo {
+            background: linear-gradient(135deg, var(--neutral-800), var(--neutral-700));
+            color: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            margin: 2rem 0;
+        }
+        
+        .interactive-demo h3 {
+            color: white;
+            margin-top: 0;
+        }
+        
+        .button {
+            background: var(--success);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin: 0.5rem 0.5rem 0.5rem 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: var(--font-sans);
+        }
+        
+        .button:hover {
+            background: var(--secondary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .button:focus {
+            outline: 2px solid white;
+            outline-offset: 2px;
+        }
+        
+        .button:active {
+            transform: translateY(0);
+        }
+        
+        .output {
+            background: var(--neutral-900);
+            color: #00ff88;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin-top: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            min-height: 120px;
+            border: 1px solid var(--neutral-700);
+            overflow-y: auto;
+            max-height: 300px;
+        }
+        
+        /* Tips and notes */
+        .tip {
+            background: #fffbeb;
+            border: 1px solid #fbbf24;
+            border-left: 4px solid var(--warning);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            margin: 1.5rem 0;
+        }
+        
+        .tip strong {
+            color: var(--neutral-900);
+        }
+        
+        /* Footer section */
+        .next-steps {
+            background: linear-gradient(135deg, var(--neutral-900) 0%, var(--neutral-800) 100%);
+            color: white;
+            padding: 3rem;
+            text-align: center;
+            border-radius: var(--radius-lg);
+            margin-top: 3rem;
+        }
+        
+        .next-steps h2 {
+            color: white;
+            border-bottom: 2px solid var(--neutral-700);
+        }
+        
+        .next-steps .concept-card {
+            background: var(--neutral-800);
+            color: white;
+            border-color: var(--neutral-700);
+        }
+        
+        .next-steps .tip {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section {
+            animation: fadeInUp 0.6s ease-out;
+        }
+        
+        /* Focus indicators */
+        *:focus {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
+        }
+        
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            .header {
+                background: black;
+                color: white;
+                border: 2px solid white;
+            }
+            
+            .section {
+                border: 2px solid black;
+            }
+            
+            .code-block {
+                background: black;
+                color: white;
+                border: 2px solid white;
+            }
+        }
+        
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            html {
+                scroll-behavior: auto;
+            }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            
+            .section {
+                padding: 2rem 1.5rem;
+            }
+            
+            .header {
+                padding: 3rem 1.5rem;
+            }
+            
+            .concepts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+            
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .step-number {
+                align-self: center;
+            }
+            
+            .button {
+                display: block;
+                width: 100%;
+                margin: 0.5rem 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 0.5rem;
+            }
+            
+            .section {
+                padding: 1.5rem 1rem;
+            }
+            
+            .header {
+                padding: 2rem 1rem;
+            }
+            
+            .breadcrumb {
+                padding: 1rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Print styles */
+        @media print {
+            body {
+                background: white;
+                color: black;
+            }
+            
+            .section {
+                page-break-inside: avoid;
+                box-shadow: none;
+                border: 1px solid black;
+            }
+            
+            .header {
+                background: white;
+                color: black;
+                border: 2px solid black;
+            }
+            
+            .code-block {
+                background: #f5f5f5;
+                color: black;
+                border: 1px solid black;
+            }
+            
+            .button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Pular para o conteúdo principal</a>
+    
+    <div class="container">
+        <header class="header" role="banner">
+            <h1>🐍 Introdução à POO em Python</h1>
+            <p class="subtitle">Guia Completo - Programação Orientada a Objetos</p>
+        </header>
+
+        <nav class="breadcrumb" role="navigation" aria-label="Informações do curso">
+            📚 <strong>Nível:</strong> Iniciante | ⏱️ <strong>Tempo estimado:</strong> 45 minutos | 🎯 <strong>Foco:</strong> Fundamentos de POO com exemplo prático
+        </nav>
+
+        <main id="main-content">
+            <!-- Seção 1: O que é POO -->
+            <section class="section" aria-labelledby="section-1">
+                <h2 id="section-1"><span class="emoji">📚</span>O que é Programação Orientada a Objetos?</h2>
+                
+                <div class="analogy">
+                    <h3>🏠 Imagine construir casas...</h3>
+                    <p><strong>POO é como ter uma construtora bem organizada!</strong></p>
+                    <ul>
+                        <li>📋 <strong>Planta da casa</strong> = Classe (o modelo/receita)</li>
+                        <li>🏠 <strong>Casa construída</strong> = Objeto (a casa real)</li>
+                        <li>🚪 <strong>Quartos, banheiro, cozinha</strong> = Atributos (características)</li>
+                        <li>🔧 <strong>Ligar luz, abrir porta</strong> = Métodos (ações que a casa pode fazer)</li>
+                    </ul>
+                </div>
+
+                <p><strong>POO (Programação Orientada a Objetos)</strong> é um paradigma de programação que organiza o código em "objetos" que representam coisas do mundo real.</p>
+                
+                <div class="concepts-grid">
+                    <div class="concept-card">
+                        <h3>🗂️ CLASSE - O Molde</h3>
+                        <div class="code-block">class Conta:</div>
+                        <p><strong>O que é:</strong> Uma classe é como um <span class="highlight">molde</span> ou <span class="highlight">planta baixa</span></p>
+                        <p><strong>Analogia:</strong> Pense como a receita de um bolo → define como o bolo será, mas não é o bolo em si</p>
+                        <p><strong>No código:</strong> <span class="highlight">Conta</span> é a classe que define como todas as contas bancárias devem ser</p>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h3>🎯 OBJETO - A Instância</h3>
+                        <div class="code-block">conta1 = Conta('00001', 'Renan')</div>
+                        <p><strong>O que é:</strong> Um objeto é uma <span class="highlight">instância específica</span> de uma classe</p>
+                        <p><strong>Analogia:</strong> O bolo real feito seguindo a receita</p>
+                        <p><strong>No código:</strong> <span class="highlight">conta1</span> é um objeto real da classe Conta</p>
+                    </div>
+                </div>
+
+                <div class="concept-item">
+                    <h3>3. 💾 Estado do Objeto (MUITO IMPORTANTE!)</h3>
+                    <p><strong>Cada objeto mantém seu próprio estado independente.</strong> Mudanças em um objeto <strong>não afetam</strong> outros objetos da mesma classe.</p>
+                    <div class="code-block">
+# Objetos INDEPENDENTES
+conta1.saldo = 50.00  # Só afeta conta1
+conta2.saldo = 2.00   # Só afeta conta2
+                    </div>
+                </div>
+
+                <div class="concept-item">
+                    <h3>4. 💬 Mensagens entre Objetos</h3>
+                    <p>Objetos podem "conversar" entre si através de métodos. Na transferência, um objeto chama método de outro:</p>
+                    <div class="code-block">
+# conta2 "fala" com conta1
+destinatario.realizarDeposito(valor)
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-content">
+                        <strong>🏗️ Classe:</strong> É o "molde" ou "receita". Como uma planta de casa que pode ser usada para construir várias casas iguais.
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-content">
+                        <strong>🏠 Objeto:</strong> É a "casa construída" usando a planta. Cada objeto é único, mesmo seguindo o mesmo molde.
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-content">
+                        <strong>📊 Atributos:</strong> São as "características" do objeto (como cor, tamanho, etc.). Na nossa conta: número, titular, saldo, extrato.
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-content">
+                        <strong>⚡ Métodos:</strong> São as "ações" que o objeto pode fazer (como ligar a luz, abrir porta). Na nossa conta: depositar, sacar, transferir.
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <div class="step-content">
+                        <strong>🔧 Construtor (__init__):</strong> É como o "funcionário do banco" que cria sua conta com seus dados específicos.
+                    </div>
+                </div>
+
+                <div class="tip">
+                    💡 <strong>Em termos simples:</strong> POO é uma forma de organizar o código criando "moldes" (classes) para fazer "coisas" (objetos) que têm características e podem fazer ações!
+                </div>
+            </section>
+
+            <!-- Seção 2: Exemplo Prático -->
+            <section class="section" aria-labelledby="section-2">
+                <h2 id="section-2"><span class="emoji">🏦</span>Exemplo Prático: Sistema de Conta Bancária</h2>
+                
+                <div class="analogy">
+                    <h3>💳 Vamos criar uma conta bancária virtual!</h3>
+                    <p>Imagine que você vai ao banco abrir uma conta:</p>
+                    <ul>
+                        <li>🏛️ O <strong>banco tem um formulário padrão</strong> (isso é nossa CLASSE)</li>
+                        <li>📝 Você preenche com <strong>seus dados</strong> (isso cria seu OBJETO)</li>
+                        <li>💰 Sua conta tem <strong>número, seu nome, saldo</strong> (esses são os ATRIBUTOS)</li>
+                        <li>💸 Você pode <strong>depositar, sacar, transferir</strong> (essas são as AÇÕES/MÉTODOS)</li>
+                    </ul>
+                </div>
+
+                <h3>🔧 Problemas no Código Original (que corrigimos)</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-content">
+                        <strong>Erro no Construtor:</strong> Estava escrito <code>*init*</code> mas deveria ser <code>__init__</code> (com dois underscores de cada lado)
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-content">
+                        <strong>Extrato não funcionava:</strong> A lista extrato existia mas nunca era preenchida com as operações
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-content">
+                        <strong>Transferência bugada:</strong> Mesmo sem saldo, tentava transferir sem verificar se o saque foi bem-sucedido
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção 3: Construtor -->
+            <section class="section" aria-labelledby="section-3">
+                <h2 id="section-3"><span class="emoji">🔨</span>CONSTRUTOR - Criando Objetos</h2>
+                
+                <div class="code-block">
+def __init__(self, numConta, titular, saldo=0):
+    self.numConta = numConta
+    self.titular = titular
+    self.saldo = saldo
+    self.extrato = []
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-content">
+                        <strong>__init__</strong>: Método especial que "constrói" o objeto (chamado automaticamente). É como o funcionário do banco que cria sua conta.
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-content">
+                        <strong>self</strong>: Representa a <strong>própria conta</strong> que está sendo criada. É como dizer "essa conta específica" (sua conta, não a do vizinho!)
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-content">
+                        <strong>Atributos</strong>: Características do objeto
+                        <ul>
+                            <li><span class="highlight">numConta</span>: Número da conta</li>
+                            <li><span class="highlight">titular</span>: Nome do dono</li>
+                            <li><span class="highlight">saldo</span>: Dinheiro disponível (valor padrão = 0)</li>
+                            <li><span class="highlight">extrato</span>: Lista de transações (inicializada vazia)</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tip">
+                    🎯 <strong>Dica importante:</strong> <code>saldo=0</code> é um parâmetro padrão. Se você não especificar o saldo inicial, a conta começa zerada!
+                </div>
+            </section>
+
+            <!-- Seção 4: Criando Objetos -->
+            <section class="section" aria-labelledby="section-4">
+                <h2 id="section-4"><span class="emoji">🗂️</span>CRIANDO OBJETOS - Instanciando</h2>
+                
+                <div class="code-block">
+conta1 = Conta('00001', 'Renan')
+conta2 = Conta('00002', 'Raphael', 2)
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-content">
+                        <strong>conta1 = Conta('00001', 'Renan')</strong>:
+                        <ul>
+                            <li>Python chama <span class="highlight">__init__</span> automaticamente</li>
+                            <li>Cria um <strong>objeto real</strong> da classe Conta</li>
+                            <li>Atribui valores: <span class="highlight">numConta='00001'</span>, <span class="highlight">titular='Renan'</span>, <span class="highlight">saldo=0</span> (valor padrão)</li>
+                        </ul>
+                        
+                        <div class="memory-visual">
+                            <strong>conta1 na memória:</strong><br>
+                            {<br>
+                            &nbsp;&nbsp;numConta: '00001',<br>
+                            &nbsp;&nbsp;titular: 'Renan',<br>
+                            &nbsp;&nbsp;saldo: 0,<br>
+                            &nbsp;&nbsp;extrato: []<br>
+                            }
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-content">
+                        <strong>conta2 = Conta('00002', 'Raphael', 2)</strong>:
+                        <ul>
+                            <li>Cria outro objeto <strong>independente</strong></li>
+                            <li>Com seus próprios valores: <span class="highlight">saldo=2</span></li>
+                        </ul>
+                        
+                        <div class="memory-visual">
+                            <strong>conta2 na memória:</strong><br>
+                            {<br>
+                            &nbsp;&nbsp;numConta: '00002',<br>
+                            &nbsp;&nbsp;titular: 'Raphael',<br>
+                            &nbsp;&nbsp;saldo: 2,<br>
+                            &nbsp;&nbsp;extrato: []<br>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção 5: Métodos -->
+            <section class="section" aria-labelledby="section-5">
+                <h2 id="section-5"><span class="emoji">⚡</span>MÉTODOS - Ações do Objeto</h2>
+
+                <p><strong>O que são métodos:</strong></p>
+                <ul>
+                    <li><strong>Ações</strong> que o objeto pode realizar</li>
+                    <li><strong>Sempre recebem <span class="highlight">self</span></strong> como primeiro parâmetro</li>
+                    <li><strong><span class="highlight">self</span></strong> permite acessar os atributos do próprio objeto</li>
+                    <li><strong>Exemplos:</strong> depositar, sacar, transferir</li>
+                </ul>
+
+                <h3>💰 Método realizarDeposito</h3>
+                <div class="code-block">
+def realizarDeposito(self, valor):
+    if valor > 0:
+        self.saldo += valor
+        self.extrato.append(f"Depósito de R$ {valor:.2f}")
+        print('Depósito realizado com sucesso no valor de:', valor)
+    else:
+        print('Digite um valor válido')
+                </div>
+                
+                <div class="concept-item">
+                    <p><strong>🎯 O que acontece:</strong></p>
+                    <ul>
+                        <li>Verifica se o valor é positivo (não pode depositar -10 reais!)</li>
+                        <li>Adiciona o valor ao saldo usando <code>self.saldo</code></li>
+                        <li>Anota no extrato o que aconteceu com <code>self.extrato.append()</code></li>
+                        <li>Avisa que deu certo!</li>
+                    </ul>
+                </div>
+
+                <h3>💸 Método realizarSaque</h3>
+                <div class="code-block">
+def realizarSaque(self, valor):
+    if valor > 0 and self.saldo >= valor:
+        self.saldo -= valor
+        self.extrato.append(f"Saque de R$ {valor:.2f}")
+        print('Saque realizado com sucesso')
+        return True  # Saque deu certo!
+    elif valor <= 0:
+        print('Digite um valor válido')
+        return False
+    else:
+        print('Não há saldo suficiente')
+        return False
+                </div>
+                
+                <div class="concept-item">
+                    <p><strong>🔍 Verificações importantes:</strong></p>
+                    <ul>
+                        <li>Tem dinheiro suficiente? ✅ (<code>self.saldo >= valor</code>)</li>
+                        <li>O valor é positivo? ✅ (<code>valor > 0</code>)</li>
+                        <li>Se tudo OK: tira o dinheiro e anota no extrato</li>
+                        <li><code>return True/False</code> - Avisa se deu certo ou não (importante para transferências!)</li>
+                    </ul>
+                </div>
+
+                <h3>🔄 Método realizarTransferencia</h3>
+                <div class="code-block">
+def realizarTransferencia(self, destinatario, valor):
+    if self.realizarSaque(valor):  # Primeiro tenta sacar
+        destinatario.realizarDeposito(valor)  # Se deu certo, deposita na outra conta
+        self.extrato.append(f"Transferência de R$ {valor:.2f} para {destinatario.titular}")
+        print('Transferência realizada com sucesso')
+    else:
+        print('Transferência não realizada')
+                </div>
+                
+                <div class="concept-item">
+                    <p><strong>🎮 Como funciona a transferência:</strong></p>
+                    <ol>
+                        <li>Tenta sacar o valor da conta remetente (<code>self</code>)</li>
+                        <li>Se o saque foi bem-sucedido (<code>True</code>), chama o método de depósito no objeto destinatário</li>
+                        <li>Registra no extrato do remetente e confirma a operação</li>
+                        <li>Se não tem dinheiro suficiente, a transferência não acontece</li>
+                    </ol>
+                    <p><em>É como se você sacasse dinheiro da sua conta e depositasse na conta do seu amigo!</em></p>
+                </div>
+
+                <div class="tip">
+                    💡 <strong>Dica de Ouro:</strong> Métodos são como "verbos" - ações que o objeto pode fazer! Pense sempre: "O que essa conta pode FAZER?"
+                </div>
+            </section>
+
+            <!-- Seção 6: Execução Passo a Passo -->
+            <section class="section" aria-labelledby="section-6">
+                <h2 id="section-6"><span class="emoji">🔄</span>EXECUÇÃO PASSO A PASSO</h2>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-content">
+                        <strong>Criando a conta1</strong>
+                        <div class="code-block">conta1 = Conta('00001', 'Renan')</div>
+                        <p><strong>Estado inicial:</strong> saldo = R$ 0,00</p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-content">
+                        <strong>Depositando R$ 100</strong>
+                        <div class="code-block">conta1.realizarDeposito(100)</div>
+                        <p><strong>O que acontece internamente:</strong></p>
+                        <ol>
+                            <li>Chama o método <span class="highlight">realizarDeposito</span> da <strong>conta1</strong></li>
+                            <li><span class="highlight">self</span> dentro do método refere-se à <strong>conta1</strong></li>
+                            <li><span class="highlight">self.saldo</span> acessa o saldo da <strong>conta1</strong></li>
+                            <li><strong>Resultado:</strong> <span class="highlight">saldo</span> da conta1 vai para <strong>100</strong></li>
+                            <li>Extrato recebe: <code>["Depósito de R$ 100.00"]</code></li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-content">
+                        <strong>Sacando R$ 50</strong>
+                        <div class="code-block">conta1.realizarSaque(50)</div>
+                        <p><strong>Resultado:</strong> <span class="highlight">saldo</span> da conta1 vai para <strong>50</strong></p>
+                        <p>Extrato agora tem: <code>["Depósito de R$ 100.00", "Saque de R$ 50.00"]</code></p>
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-content">
+                        <strong>Criando conta2 e fazendo transferência</strong>
+                        <div class="code-block">
+conta2 = Conta('00002', 'Raphael', 2)
+conta2.realizarTransferencia(conta1, 1.99)
+                        </div>
+                        <p><strong>Fluxo completo da transferência:</strong></p>
+                        <ol>
+                            <li><span class="highlight">conta2.realizarSaque(1.99)</span> → tira R$ 1.99 da conta2</li>
+                            <li>Se o saque deu certo, <span class="highlight">conta1.realizarDeposito(1.99)</span> → deposita R$ 1.99 na conta1</li>
+                            <li>Registra a operação no extrato de ambas as contas</li>
+                        </ol>
+                        
+                        <div class="memory-visual">
+                            <strong>Estado FINAL:</strong><br>
+                            conta1.saldo = 51.99  # +1.99 da transferência<br>
+                            conta2.saldo = 0.01   # -1.99 da transferência<br>
+                            <br>
+                            conta1.extrato = ["Depósito de R$ 100.00", "Saque de R$ 50.00", "Depósito de R$ 1.99"]<br>
+                            conta2.extrato = ["Saque de R$ 1.99", "Transferência de R$ 1.99 para Renan"]
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção 7: Simulação Interativa -->
+            <section class="section" aria-labelledby="section-7">
+                <h2 id="section-7"><span class="emoji">🎮</span>Simulação Interativa</h2>
+                
+                <div class="interactive-demo">
+                    <h3>🧪 Teste o Sistema de Contas</h3>
+                    <p>Vamos criar duas contas e fazer algumas operações para ver como funciona na prática:</p>
+                    
+                    <button class="button" onclick="criarContas()">🏦 Criar Contas</button>
+                    <button class="button" onclick="fazerDeposito()">💰 Fazer Depósito</button>
+                    <button class="button" onclick="fazerSaque()">💸 Fazer Saque</button>
+                    <button class="button" onclick="fazerTransferencia()">🔄 Transferir</button>
+                    <button class="button" onclick="verExtrato()">📄 Ver Extrato</button>
+                    <button class="button" onclick="limparOutput()">🧹 Limpar</button>
+                    
+                    <div class="output" id="output" role="log" aria-live="polite" aria-label="Resultado das operações">👆 Clique nos botões acima para simular as operações bancárias!</div>
+                </div>
+            </section>
+
+            <!-- Seção 8: Conceitos Fundamentais -->
+            <section class="section" aria-labelledby="section-8">
+                <h2 id="section-8"><span class="emoji">🎯</span>CONCEITOS FUNDAMENTAIS DA POO</h2>
+                
+                <div class="concept-item">
+                    <h3>1. 🔒 Encapsulamento</h3>
+                    <p>Juntar dados (atributos) e ações (métodos) em um único objeto. Na nossa <span class="highlight">Conta</span>, temos os dados (saldo, titular) E as operações (depositar, sacar) juntos.</p>
+                    <div class="code-block">
+# Tudo em um lugar só!
+conta1.saldo          # Dado
+conta1.realizarSaque() # Ação
+                    </div>
+                    <p><em>Observação: Neste exemplo os atributos são públicos. Para maior encapsulamento, usaríamos convenção <code>_saldo</code> ou <code>__saldo</code> e propriedades.</em></p>
+                </div>
+                
+                <div class="concept-item">
+                    <h3>2. 🎭 Abstração</h3>
+                    <p>Esconder detalhes complexos, mostrando só o necessário. Você usa <span class="highlight">realizarDeposito()</span> sem saber como funciona internamente - apenas chama e funciona!</p>
+                    <div class="code-block">
+# Você só precisa disso:
+conta1.realizarDeposito(100)
+
+# Não precisa saber da implementação interna
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção 9: Vantagens da POO -->
+            <section class="section" aria-labelledby="section-9">
+                <h2 id="section-9"><span class="emoji">💡</span>POR QUE USAR POO?</h2>
+                
+                <div class="comparison">
+                    <div class="comparison-item without-poo">
+                        <h3>❌ SEM POO</h3>
+                        <div class="code-block">
+# Variáveis soltas - difícil organizar
+saldo_renan = 0
+saldo_raphael = 2
+numero_conta_renan = '00001'
+nome_titular_renan = 'Renan'
+extrato_renan = []
+# ... muitas variáveis para gerenciar!
+
+def depositar_renan(valor):
+    global saldo_renan, extrato_renan
+    # código repetitivo...
+
+def depositar_raphael(valor):
+    global saldo_raphael, extrato_raphael
+    # mesmo código, mas para outra pessoa...
+                        </div>
+                        <p><strong>Problemas:</strong> Código confuso, difícil manter, propenso a erros, muito repetitivo</p>
+                    </div>
+                    
+                    <div class="comparison-item with-poo">
+                        <h3>✅ COM POO</h3>
+                        <div class="code-block">
+# Tudo organizado em objetos
+conta_renan = Conta('00001', 'Renan')
+conta_raphael = Conta('00002', 'Raphael', 2)
+
+# Mesmo método serve para qualquer conta!
+conta_renan.realizarDeposito(100)
+conta_raphael.realizarDeposito(50)
+# Tudo relacionado está dentro do objeto!
+                        </div>
+                        <p><strong>Vantagens:</strong> Organizado, fácil de manter, representa realidade, reutilizável</p>
+                    </div>
+                </div>
+                
+                <h3>🎯 Principais Vantagens:</h3>
+                <ul class="advantage-list">
+                    <li><strong>Organização:</strong> Código mais limpo e estruturado</li>
+                    <li><strong>Reuso:</strong> Posso criar muitas contas usando a mesma classe</li>
+                    <li><strong>Manutenção:</strong> Fácil modificar e encontrar problemas</li>
+                    <li><strong>Modelagem:</strong> Representa bem o mundo real</li>
+                    <li><strong>Escalabilidade:</strong> Fácil adicionar novas funcionalidades</li>
+                    <li><strong>Responsabilidade Única:</strong> Cada classe trata de uma coisa específica</li>
+                </ul>
+
+                <div class="analogy">
+                    <h3>🎮 Exemplo do Videogame:</h3>
+                    <p>Imagine um jogo com personagens:</p>
+                    <ul>
+                        <li>🧙‍♂️ <strong>Classe "Personagem":</strong> tem vida, força, magia</li>
+                        <li>⚔️ <strong>Métodos:</strong> atacar(), defender(), curar()</li>
+                        <li>👤 <strong>Objetos:</strong> Mario, Luigi, Peach - cada um com seus próprios valores!</li>
+                    </ul>
+                    <p>É exatamente isso que fizemos com a conta bancária! 🏦</p>
+                </div>
+            </section>
+
+            <!-- Seção 10: Boas Práticas -->
+            <section class="section" aria-labelledby="section-10">
+                <h2 id="section-10"><span class="emoji">📋</span>BOAS PRÁTICAS E MELHORIAS</h2>
+                
+                <div class="concept-item">
+                    <h3>1. 📝 Convenções de Nomenclatura (PEP8)</h3>
+                    <p>Adotar nomes em <em>snake_case</em> para métodos:</p>
+                    <div class="code-block">
+# Melhor prática:
+def realizar_deposito(self, valor: float) -> None:
+    # Código aqui...
+                    </div>
+                </div>
+
+                <div class="concept-item">
+                    <h3>2. 🎯 Type Hints</h3>
+                    <p>Usar <strong>type hints</strong> para clareza:</p>
+                    <div class="code-block">
+def realizar_deposito(self, valor: float) -> None:
+def realizar_saque(self, valor: float) -> bool:
+def realizar_transferencia(self, destinatario: 'Conta', valor: float) -> None:
+                    </div>
+                </div>
+
+                <div class="concept-item">
+                    <h3>3. 🚨 Tratamento de Exceções</h3>
+                    <p>Considerar <strong>exceções</strong> em vez de apenas imprimir mensagens:</p>
+                    <div class="code-block">
+def realizar_saque(self, valor: float) -> bool:
+    if valor <= 0:
+        raise ValueError("Valor deve ser positivo")
+    if self.saldo < valor:
+        raise ValueError("Saldo insuficiente")
+    # ... resto do código
+                    </div>
+                </div>
+
+                <div class="concept-item">
+                    <h3>4. 🔒 Encapsulamento Melhorado</h3>
+                    <p>Proteger o saldo com propriedades:</p>
+                    <div class="code-block">
+class Conta:
+    def __init__(self, numConta: str, titular: str, saldo: float = 0):
+        self._saldo = saldo  # Atributo "protegido"
+    
+    @property
+    def saldo(self) -> float:
+        return self._saldo  # Apenas leitura
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção 11: Exercício Prático -->
+            <section class="section" aria-labelledby="section-11">
+                <h2 id="section-11"><span class="emoji">🏋️</span>EXERCÍCIO PRÁTICO</h2>
+                
+                <div class="tip">
+                    💪 <strong>Desafio:</strong> Tente implementar essas melhorias na classe Conta!
+                </div>
+
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-content">
+                        <strong>Adicionar método imprimir_extrato():</strong>
+                        <div class="code-block">
+def imprimir_extrato(self):
+    print(f"\n=== EXTRATO - {self.titular} ===")
+    for operacao in self.extrato:
+        print(operacao)
+    print(f"Saldo atual: R$ {self.saldo:.2f}")
+                        </div>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-content">
+                        <strong>Proteger o saldo:</strong>
+                        <p>Usar <code>self._saldo</code> e criar uma propriedade apenas de leitura para <code>saldo</code>.</p>
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-content">
+                        <strong>Adicionar validações mais robustas:</strong>
+                        <p>Verificar se o titular não é uma string vazia, se o número da conta é válido, etc.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção 12: Próximos Passos -->
+            <section class="next-steps" aria-labelledby="section-12">
+                <h2 id="section-12">🚀 PRÓXIMOS PASSOS NA POO</h2>
+                
+                <div class="concepts-grid">
+                    <div class="concept-card">
+                        <h3>👨‍👩‍👧‍👦 Herança</h3>
+                        <p>Criar classes especializadas a partir de classes existentes</p>
+                        <div class="code-block">
+class ContaCorrente(Conta):
+    def __init__(self, numConta, titular, limite):
+        super().__init__(numConta, titular)
+        self.limite = limite
+    
+    def realizar_saque(self, valor):
+        # Permite saque até o limite
+        if self.saldo + self.limite >= valor:
+            # ... lógica específica
+                        </div>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h3>🔄 Polimorfismo</h3>
+                        <p>Métodos com mesmo nome mas comportamentos diferentes</p>
+                        <div class="code-block">
+# Mesmo método, comportamentos diferentes
+conta_poupanca.calcular_rendimento()
+conta_corrente.calcular_taxa()
+conta_especial.calcular_bonus()
+                        </div>
+                    </div>
+                    
+                    <div class="concept-card">
+                        <h3>🔐 Encapsulamento Avançado</h3>
+                        <p>Proteger dados com atributos privados e propriedades</p>
+                        <div class="code-block">
+class Conta:
+    def __init__(self):
+        self.__saldo = 0  # Atributo privado
+    
+    @property
+    def saldo(self):
+        return self.__saldo
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tip">
+                    💡 <strong>Dica Final:</strong> Pense em objetos como "coisas do mundo real" com características (atributos) e ações (métodos)! Esta mentalidade vai ajudar muito no aprendizado da POO! 🎯
+                </div>
+            </section>
+
+            <!-- Seção 13: Código Completo -->
+            <section class="section" aria-labelledby="section-13">
+                <h2 id="section-13"><span class="emoji">📄</span>CÓDIGO COMPLETO CORRIGIDO</h2>
+                
+                <div class="code-block">
+class Conta:
+    def __init__(self, numConta, titular, saldo=0):
+        self.numConta = numConta
+        self.titular = titular
+        self.saldo = saldo
+        self.extrato = []
+
+    def realizarDeposito(self, valor):
+        if valor > 0:
+            self.saldo += valor
+            self.extrato.append(f"Depósito de R$ {valor:.2f}")
+            print('Depósito realizado com sucesso no valor de:', valor)
+        else:
+            print('Digite um valor válido')
+
+    def realizarSaque(self, valor):
+        if valor > 0 and self.saldo >= valor:
+            self.saldo -= valor
+            self.extrato.append(f"Saque de R$ {valor:.2f}")
+            print('Saque realizado com sucesso')
+            return True
+        elif valor <= 0:
+            print('Digite um valor válido')
+            return False
+        else:
+            print('Não há saldo suficiente')
+            return False
+
+    def realizarTransferencia(self, destinatario, valor):
+        if self.realizarSaque(valor):
+            destinatario.realizarDeposito(valor)
+            self.extrato.append(f"Transferência de R$ {valor:.2f} para {destinatario.titular}")
+            print('Transferência realizada com sucesso')
+        else:
+            print('Transferência não realizada')
+    
+    def exibirExtrato(self):
+        print(f'\n=== EXTRATO - {self.titular} ===')
+        print(f'Conta: {self.numConta}')
+        if self.extrato:
+            for operacao in self.extrato:
+                print(operacao)
+        else:
+            print('Nenhuma movimentação registrada')
+        print(f'Saldo atual: R$ {self.saldo:.2f}')
+        print('='*30)
+
+# Exemplo de uso:
+conta1 = Conta('00001', 'Renan')
+conta1.realizarDeposito(100)
+conta1.realizarSaque(50)
+print("Saldo conta1:", conta1.saldo)
+
+conta2 = Conta('00002', 'Raphael', 2)
+conta2.realizarTransferencia(conta1, 1.99)
+print(f'Saldo conta2: R$ {conta2.saldo:.2f}')
+print(f'Saldo conta1: R$ {conta1.saldo:.2f}')
+
+# Exibindo extratos
+conta1.exibirExtrato()
+conta2.exibirExtrato()
+                </div>
+            </section>
+
+            <!-- Seção 14: Resumo Final -->
+            <section class="section" aria-labelledby="section-14">
+                <h2 id="section-14"><span class="emoji">🏆</span>RESUMO FINAL</h2>
+                
+                <div class="tip">
+                    <h3>🎓 O que você aprendeu hoje:</h3>
+                    <ul>
+                        <li>✅ POO é como criar moldes (classes) para fazer objetos</li>
+                        <li>✅ Objetos têm características (atributos) e podem fazer coisas (métodos)</li>
+                        <li>✅ <code>__init__</code> é o construtor que cria o objeto</li>
+                        <li>✅ <code>self</code> se refere ao objeto específico</li>
+                        <li>✅ Cada objeto mantém seu próprio estado independente</li>
+                        <li>✅ POO organiza o código de forma mais natural e reutilizável</li>
+                        <li>✅ Encapsulamento, abstração e responsabilidade única são princípios fundamentais</li>
+                        <li>✅ Boas práticas incluem type hints, tratamento de exceções e nomenclatura adequada</li>
+                    </ul>
+                </div>
+                
+                <div class="analogy">
+                    <h3>🎯 Regra de Ouro da POO:</h3>
+                    <p><strong>"Sempre que você pensar 'isso pode ser uma coisa com características e ações', é POO!"</strong> 🚀</p>
+                    <p><strong>Exemplos do dia a dia:</strong></p>
+                    <ul>
+                        <li>🚗 <strong>Carro:</strong> cor, modelo, ano → acelerar(), frear(), ligar()</li>
+                        <li>👤 <strong>Pessoa:</strong> nome, idade, altura → falar(), andar(), comer()</li>
+                        <li>🎮 <strong>Jogo:</strong> pontos, vidas, nível → jogar(), pausar(), salvar()</li>
+                        <li>📚 <strong>Livro:</strong> título, autor, páginas → abrir(), ler(), fechar()</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Simulação das operações bancárias
+        let conta1 = null;
+        let conta2 = null;
+
+        class Conta {
+            constructor(numConta, titular, saldo = 0) {
+                this.numConta = numConta;
+                this.titular = titular;
+                this.saldo = saldo;
+                this.extrato = [];
+            }
+
+            realizarDeposito(valor) {
+                if (valor > 0) {
+                    this.saldo += valor;
+                    this.extrato.push(`Depósito: +R$ ${valor.toFixed(2)}`);
+                    return `✅ Depósito de R$ ${valor.toFixed(2)} realizado com sucesso!`;
+                } else {
+                    return `❌ Digite um valor válido`;
+                }
+            }
+
+            realizarSaque(valor) {
+                if (this.saldo >= valor && valor > 0) {
+                    this.saldo -= valor;
+                    this.extrato.push(`Saque: -R$ ${valor.toFixed(2)}`);
+                    return { sucesso: true, mensagem: `✅ Saque de R$ ${valor.toFixed(2)} realizado com sucesso!` };
+                } else if (valor <= 0) {
+                    return { sucesso: false, mensagem: `❌ Digite um valor válido` };
+                } else {
+                    return { sucesso: false, mensagem: `❌ Não há saldo suficiente` };
+                }
+            }
+
+            realizarTransferencia(destinatario, valor) {
+                const resultadoSaque = this.realizarSaque(valor);
+                if (resultadoSaque.sucesso) {
+                    const resultadoDeposito = destinatario.realizarDeposito(valor);
+                    this.extrato.push(`Transferência: -R$ ${valor.toFixed(2)} para ${destinatario.titular}`);
+                    return `🔄 Transferência de R$ ${valor.toFixed(2)} de ${this.titular} para ${destinatario.titular} realizada com sucesso!`;
+                } else {
+                    return `❌ Transferência não pôde ser realizada: ${resultadoSaque.mensagem}`;
+                }
+            }
+
+            exibirExtrato() {
+                let extrato = `\n=== EXTRATO - ${this.titular} ===\n`;
+                extrato += `Conta: ${this.numConta}\n`;
+                if (this.extrato.length > 0) {
+                    this.extrato.forEach(operacao => {
+                        extrato += operacao + '\n';
+                    });
+                } else {
+                    extrato += 'Nenhuma movimentação registrada\n';
+                }
+                extrato += `Saldo atual: R$ ${this.saldo.toFixed(2)}\n`;
+                extrato += '==============================';
+                return extrato;
+            }
+        }
+
+        function adicionarOutput(texto) {
+            const output = document.getElementById('output');
+            output.innerHTML += texto + '\n';
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function limparOutput() {
+            document.getElementById('output').innerHTML = '🧹 Tela limpa! Pronto para novas operações.\n';
+        }
+
+        function criarContas() {
+            conta1 = new Conta('00001', 'Renan');
+            conta2 = new Conta('00002', 'Raphael', 50);
+            adicionarOutput('🏦 Sistema bancário inicializado!');
+            adicionarOutput(`👤 ${conta1.titular} - Conta: ${conta1.numConta} - Saldo: R$ ${conta1.saldo.toFixed(2)}`);
+            adicionarOutput(`👤 ${conta2.titular} - Conta: ${conta2.numConta} - Saldo: R$ ${conta2.saldo.toFixed(2)}`);
+            adicionarOutput('─────────────────────────────');
+        }
+
+        function fazerDeposito() {
+            if (!conta1) {
+                adicionarOutput('❌ Crie as contas primeiro!');
+                return;
+            }
+            const resultado = conta1.realizarDeposito(100);
+            adicionarOutput(resultado);
+            adicionarOutput(`💰 Novo saldo de ${conta1.titular}: R$ ${conta1.saldo.toFixed(2)}`);
+        }
+
+        function fazerSaque() {
+            if (!conta1) {
+                adicionarOutput('❌ Crie as contas primeiro!');
+                return;
+            }
+            const resultado = conta1.realizarSaque(30);
+            adicionarOutput(resultado.mensagem);
+            adicionarOutput(`💰 Novo saldo de ${conta1.titular}: R$ ${conta1.saldo.toFixed(2)}`);
+        }
+
+        function fazerTransferencia() {
+            if (!conta1 || !conta2) {
+                adicionarOutput('❌ Crie as contas primeiro!');
+                return;
+            }
+            const resultado = conta2.realizarTransferencia(conta1, 25);
+            adicionarOutput(resultado);
+            adicionarOutput(`💰 Saldo ${conta2.titular}: R$ ${conta2.saldo.toFixed(2)}`);
+            adicionarOutput(`💰 Saldo ${conta1.titular}: R$ ${conta1.saldo.toFixed(2)}`);
+        }
+
+        function verExtrato() {
+            if (!conta1 || !conta2) {
+                adicionarOutput('❌ Crie as contas primeiro!');
+                return;
+            }
+            adicionarOutput(conta1.exibirExtrato());
+            adicionarOutput('');
+            adicionarOutput(conta2.exibirExtrato());
+        }
+
+        // Acessibilidade e experiência do usuário
+        document.addEventListener('DOMContentLoaded', function() {
+            // Efeitos de hover para cards
+            const cards = document.querySelectorAll('.concept-card, .step');
+            
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                        this.style.transform = 'translateY(-4px)';
+                    }
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+
+            // Anúncios de mudança de estado para leitores de tela
+            const output = document.getElementById('output');
+            if (output) {
+                const observer = new MutationObserver(function(mutations) {
+                    mutations.forEach(function(mutation) {
+                        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                            // Notifica leitores de tela sobre mudanças no output
+                            output.setAttribute('aria-label', 'Resultado atualizado: ' + output.textContent.slice(-100));
+                        }
+                    });
+                });
+                
+                observer.observe(output, { childList: true, subtree: true });
+            }
+
+            // Melhoria na navegação por teclado
+            document.addEventListener('keydown', function(e) {
+                // Atalho para voltar ao topo
+                if (e.ctrlKey && e.key === 'Home') {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Indicador de foco melhorado para botões
+        document.querySelectorAll('.button').forEach(button => {
+            button.addEventListener('focus', function() {
+                this.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.5)';
+            });
+            
+            button.addEventListener('blur', function() {
+                this.style.boxShadow = '';
+            });
+        });
+    </script>
+</body>
+</html>
