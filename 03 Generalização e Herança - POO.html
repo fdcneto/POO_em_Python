@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generalização e Herança - POO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #4a4a4a;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #667eea;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        h2 {
+            color: #667eea;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        h2::before {
+            content: "◆";
+            margin-right: 10px;
+            color: #764ba2;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        .analogy {
+            background: #f8f9ff;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+
+        .keyword {
+            color: #f92672;
+        }
+
+        .class-name {
+            color: #a6e22e;
+        }
+
+        .method {
+            color: #66d9ef;
+        }
+
+        .attribute {
+            color: #fd971f;
+        }
+
+        .hierarchy {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .hierarchy-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 0 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            min-width: 150px;
+        }
+
+        .hierarchy-arrow {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .benefit-card {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .benefit-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+
+        .visual-example {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .tree {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .tree-node {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        .tree-children {
+            margin-top: 20px;
+        }
+
+        .child-node {
+            display: inline-block;
+            background: #764ba2;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .hierarchy {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hierarchy-arrow {
+                transform: rotate(90deg);
+                margin: 10px 0;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><a href="./index.html">Introdução à POO</a>  |  <a href="./01 Encapsulamento.html">01 Encapsulamento</a>  |  <a href="./02 Polimorfismo - POO.html">02 Polimorfismo</a>  |  <a href="./03 Generalização e Herança - POO.html">03 Generalização e Herança</a>  |  <a href="./04 Composição - POO.html">04 Composição</a></h1>
+            <p class="subtitle">Conceitos Fundamentais da Programação Orientada a Objetos</p>
+        </header>
+
+        <div class="card">
+            <h2><span class="icon">📚</span> O que é Generalização?</h2>
+            <p>Imagine que você está organizando seus brinquedos. Você tem carrinhos, motinhas, caminhões e ônibus. Ao observar todos eles, você percebe que têm características em comum: todos têm <strong>rodas</strong>, um <strong>motor</strong> e precisam de <strong>combustível</strong>.</p>
+            
+            <div class="analogy">
+                <p><strong>Generalização</strong> é exatamente esse processo de identificar o que é comum entre diferentes coisas e criar uma categoria mais ampla que englobe todas elas.</p>
+            </div>
+            
+            <p><strong>Exemplo prático:</strong></p>
+            <ul>
+                <li>Carrinho, motinha, caminhão e ônibus → todos são <strong>Veículos Terrestres</strong></li>
+                <li>O que eles têm em comum? Rodas, motor, tanque de combustível</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2><span class="icon">🔄</span> O que é Herança?</h2>
+            <p>A <strong>herança</strong> é o mecanismo que permite criar novas classes baseadas em classes existentes. A classe nova (filha) herda automaticamente todas as características da classe original (pai).</p>
+            
+            <div class="analogy">
+                <p><strong>Analogia familiar:</strong></p>
+                <ul>
+                    <li>Pai/Mãe → características genéticas (cor dos olhos, tipo sanguíneo)</li>
+                    <li>Filho/Filha → herda essas características + pode ter características próprias</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span class="icon">🎯</span> Como funciona na prática?</h2>
+            
+            <h3>Classe Pai (Superclasse) - GENÉRICA</h3>
+            <div class="code-block">
+                <span class="keyword">class</span> <span class="class-name">VeiculoTerrestre</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">__init__</span>(<span class="attribute">self</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.motor = <span class="keyword">True</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.rodas = <span class="keyword">0</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.tanque_combustivel = <span class="keyword">True</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">acelerar</span>(<span class="attribute">self</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="attribute">"Acelerando o veículo!"</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">frear</span>(<span class="attribute">self</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="attribute">"Freando o veículo!"</span>)
+            </div>
+
+            <h3>Classes Filhas (Subclasses) - ESPECÍFICAS</h3>
+            <div class="code-block">
+                <span class="keyword">class</span> <span class="class-name">Moto</span>(<span class="class-name">VeiculoTerrestre</span>):  <span class="comment"># Herda de VeiculoTerrestre</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">__init__</span>(<span class="attribute">self</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">super</span>().<span class="method">__init__</span>()  <span class="comment"># Chama o construtor do pai</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.rodas = <span class="keyword">2</span>  <span class="comment"># Especificação única da moto</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.capacete_obrigatorio = <span class="keyword">True</span><br>
+                <br>
+                <span class="keyword">class</span> <span class="class-name">Carro</span>(<span class="class-name">VeiculoTerrestre</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">__init__</span>(<span class="attribute">self</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">super</span>().<span class="method">__init__</span>()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.rodas = <span class="keyword">4</span>  <span class="comment"># Especificação única do carro</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.portas = <span class="keyword">4</span><br>
+                <br>
+                <span class="keyword">class</span> <span class="class-name">Caminhao</span>(<span class="class-name">VeiculoTerrestre</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">__init__</span>(<span class="attribute">self</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">super</span>().<span class="method">__init__</span>()<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.rodas = <span class="keyword">8</span>  <span class="comment"># Especificação única do caminhão</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.carga_maxima = <span class="keyword">5000</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span class="icon">💡</span> Vantagens da Herança</h2>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">♻️</div>
+                    <h3>Reutilização de Código</h3>
+                    <p>Métodos comuns são escritos uma vez na classe pai e herdados por todas as filhas.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">📊</div>
+                    <h3>Organização Hierárquica</h3>
+                    <p>Código mais organizado e fácil de entender com estrutura clara.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">🔧</div>
+                    <h3>Manutenção Facilitada</h3>
+                    <p>Alterações em características comuns afetam todas as subclasses automaticamente.</p>
+                </div>
+            </div>
+            
+            <div class="code-block">
+                <span class="comment"># Todas as classes filhas já possuem automaticamente:</span><br>
+                moto = <span class="class-name">Moto</span>()<br>
+                moto.<span class="method">acelerar</span>()  <span class="comment"># Método herdado - funciona sem precisar reescrever!</span><br>
+                <br>
+                carro = <span class="class-name">Carro</span>()<br>
+                carro.<span class="method">frear</span>()    <span class="comment"># Método herdado - funciona automaticamente!</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span class="icon">🚀</span> Exemplo Completo e Interativo</h2>
+            
+            <div class="code-block">
+                <span class="comment"># CLASSE PAI (Generalização)</span><br>
+                <span class="keyword">class</span> <span class="class-name">Animal</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">__init__</span>(<span class="attribute">self</span>, nome, idade):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.nome = nome<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.idade = idade<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.vivo = <span class="keyword">True</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">comer</span>(<span class="attribute">self</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="attribute">f"</span>{<span class="attribute">self</span>.nome}<span class="attribute"> está comendo!"</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">dormir</span>(<span class="attribute">self</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="attribute">f"</span>{<span class="attribute">self</span>.nome}<span class="attribute"> está dormindo!"</span>)<br>
+                <br>
+                <span class="comment"># CLASSES FILHAS (Especializações)</span><br>
+                <span class="keyword">class</span> <span class="class-name">Cachorro</span>(<span class="class-name">Animal</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">__init__</span>(<span class="attribute">self</span>, nome, idade, raca):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">super</span>().<span class="method">__init__</span>(nome, idade)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.raca = raca<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.quantidade_patas = <span class="keyword">4</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">latir</span>(<span class="attribute">self</span>):  <span class="comment"># Comportamento específico do cachorro</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="attribute">"Au au!"</span>)<br>
+                <br>
+                <span class="keyword">class</span> <span class="class-name">Gato</span>(<span class="class-name">Animal</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">__init__</span>(<span class="attribute">self</span>, nome, idade, cor):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">super</span>().<span class="method">__init__</span>(nome, idade)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.cor = cor<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.quantidade_patas = <span class="keyword">4</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">miar</span>(<span class="attribute">self</span>):  <span class="comment"># Comportamento específico do gato</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="attribute">"Miau!"</span>)<br>
+                <br>
+                <span class="keyword">class</span> <span class="class-name">Peixe</span>(<span class="class-name">Animal</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">__init__</span>(<span class="attribute">self</span>, nome, idade, tipo_agua):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">super</span>().<span class="method">__init__</span>(nome, idade)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.tipo_agua = tipo_agua<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.quantidade_nadadeiras = <span class="keyword">4</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">nadar</span>(<span class="attribute">self</span>):  <span class="comment"># Comportamento específico do peixe</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="attribute">"Glub glub!"</span>)<br>
+                <br>
+                <span class="comment"># USANDO AS CLASSES</span><br>
+                rex = <span class="class-name">Cachorro</span>(<span class="attribute">"Rex"</span>, <span class="keyword">3</span>, <span class="attribute">"Labrador"</span>)<br>
+                whiskers = <span class="class-name">Gato</span>(<span class="attribute">"Whiskers"</span>, <span class="keyword">2</span>, <span class="attribute">"Cinza"</span>)<br>
+                nemo = <span class="class-name">Peixe</span>(<span class="attribute">"Nemo"</span>, <span class="keyword">1</span>, <span class="attribute">"Salgada"</span>)<br>
+                <br>
+                <span class="comment"># Todos herdam de Animal, então possuem:</span><br>
+                rex.<span class="method">comer</span>()        <span class="comment"># "Rex está comendo!"</span><br>
+                whiskers.<span class="method">dormir</span>()  <span class="comment"># "Whiskers está dormindo!"</span><br>
+                nemo.<span class="method">comer</span>()       <span class="comment"># "Nemo está comendo!"</span><br>
+                <br>
+                <span class="comment"># E cada um tem seus comportamentos específicos:</span><br>
+                rex.<span class="method">latir</span>()        <span class="comment"># "Au au!" - Só o cachorro sabe latir</span><br>
+                whiskers.<span class="method">miar</span>()    <span class="comment"># "Miau!" - Só o gato sabe miar</span><br>
+                nemo.<span class="method">nadar</span>()       <span class="comment"># "Glub glub!" - Só o peixe sabe nadar</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span class="icon">📊</span> Resumo Visual</h2>
+            
+            <div class="visual-example">
+                <div class="tree">
+                    <div class="tree-node">ANIMAL (Classe Pai)</div>
+                    <div class="tree-children">
+                        <div class="child-node">Cachorro</div>
+                        <div class="child-node">Gato</div>
+                        <div class="child-node">Peixe</div>
+                    </div>
+                </div>
+                
+                <p><strong>Hierarquia de Veículos:</strong></p>
+                <div class="hierarchy">
+                    <div class="hierarchy-item">
+                        <strong>Veículo Terrestre</strong><br>
+                        (classe pai)
+                    </div>
+                    <div class="hierarchy-arrow">↓</div>
+                    <div class="hierarchy-item">
+                        <strong>Moto</strong><br>
+                        (2 rodas, capacete)
+                    </div>
+                    <div class="hierarchy-arrow">↓</div>
+                    <div class="hierarchy-item">
+                        <strong>Carro</strong><br>
+                        (4 rodas, 4 portas)
+                    </div>
+                    <div class="hierarchy-arrow">↓</div>
+                    <div class="hierarchy-item">
+                        <strong>Caminhão</strong><br>
+                        (8+ rodas, carga)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span class="icon">🎯</span> Principais Benefícios</h2>
+            
+            <ol>
+                <li><strong>Economia de código</strong> - Não precisa repetir o que é comum</li>
+                <li><strong>Consistência</strong> - Todos os objetos relacionados se comportam de forma similar</li>
+                <li><strong>Flexibilidade</strong> - Fácil adicionar novos tipos sem modificar o existente</li>
+                <li><strong>Organização</strong> - Código mais limpo e fácil de entender</li>
+            </ol>
+        </div>
+
+        <div class="card">
+            <h2><span class="icon">⚠️</span> Cuidados Importantes</h2>
+            
+            <div class="warning">
+                <ul>
+                    <li><strong>Não force herança</strong> onde não existe relação real "é um"</li>
+                    <li><strong>Prefira composição</strong> quando a relação for "tem um" em vez de "é um"</li>
+                    <li><strong>Evite hierarquias muito profundas</strong> - podem ficar complexas</li>
+                </ul>
+            </div>
+            
+            <p>A generalização e herança são como criar uma <strong>família de classes</strong> onde os "pais" passam suas características para os "filhos", que podem ter suas próprias particularidades! 🎉</p>
+        </div>
+
+        <footer>
+            <p>Espero que esta explicação tenha tornado os conceitos mais claros!</p>
+        </footer>
+    </div>
+</body>
+</html>

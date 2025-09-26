@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Composição - POO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #4a4a4a;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #ff7e5f;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        h2 {
+            color: #ff7e5f;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        h2::before {
+            content: "◆";
+            margin-right: 10px;
+            color: #feb47b;
+        }
+
+        .icon {
+            font-size: 1.5rem;
+            margin-right: 10px;
+        }
+
+        .analogy {
+            background: #fff5f2;
+            border-left: 4px solid #ff7e5f;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+
+        .keyword {
+            color: #f92672;
+        }
+
+        .class-name {
+            color: #a6e22e;
+        }
+
+        .method {
+            color: #66d9ef;
+        }
+
+        .attribute {
+            color: #fd971f;
+        }
+
+        .comment {
+            color: #75715e;
+        }
+
+        .composition-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .composed-item {
+            background: #ff7e5f;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px;
+            text-align: center;
+            min-width: 150px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .composition-arrow {
+            font-size: 2rem;
+            margin: 0 10px;
+            color: white;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .benefit-card {
+            background: #fff5f2;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .benefit-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #ff7e5f;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-table th {
+            background: #ff7e5f;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        .comparison-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: #fff9f7;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .hierarchy {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .hierarchy-level {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        .hierarchy-item {
+            background: #ff7e5f;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 0 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .hierarchy-arrow {
+            font-size: 1.5rem;
+            margin: 10px 0;
+            color: white;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .composition-visual {
+                flex-direction: column;
+            }
+            
+            .composition-arrow {
+                transform: rotate(90deg);
+                margin: 10px 0;
+            }
+            
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hierarchy-level {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hierarchy-arrow {
+                transform: rotate(90deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><a href="./index.html">Introdução à POO</a>  |  <a href="./01 Encapsulamento.html">01 Encapsulamento</a>  |  <a href="./02 Polimorfismo - POO.html">02 Polimorfismo</a>  |  <a href="./03 Generalização e Herança - POO.html">03 Generalização e Herança</a>  |  <a href="./04 Composição - POO.html">04 Composição</a></h1>
+            <p class="subtitle">Conceito Fundamental da Programação Orientada a Objetos</p>
+        </header>
+
+        <div class="card">
+            <h2><span class="icon">🧩</span> O que é Composição?</h2>
+            <p>Imagine que você está construindo um carro. Em vez de criar tudo do zero, você usa componentes prontos: motor, rodas, bancos, volante. Cada componente é uma peça independente que, quando combinada, forma o carro completo.</p>
+            
+            <div class="analogy">
+                <p><strong>Composição</strong> é exatamente esse conceito: uma classe é formada pela combinação de objetos de outras classes, onde cada parte contribui com sua funcionalidade específica.</p>
+            </div>
+            
+            <p><strong>Definição técnica:</strong> A composição é um conceito onde uma classe é composta por objetos de outras classes. Em vez de herdar comportamentos, a classe utiliza instâncias de outras classes para obter funcionalidades.</p>
+        </div>
+
+        <div class="card">
+            <h2><span class="icon">🔍</span> Composição vs Herança</h2>
+            
+            <div class="analogy">
+                <p><strong>Relacionamento "TEM UM" vs "É UM":</strong></p>
+                <ul>
+                    <li><strong>Herança:</strong> "Cachorro É UM Animal" (relação de especialização)</li>
+                    <li><strong>Composição:</strong> "Carro TEM UM Motor" (relação de posse/agregação)</li>
+                </ul>
+            </div>
+
+            <table class="comparison-table">
+                <tr>
+                    <th>Característica</th>
+                    <th>Composição</th>
+                    <th>Herança</th>
+                </tr>
+                <tr>
+                    <td><strong>Relação</strong></td>
+                    <td>TEM UM (has-a)</td>
+                    <td>É UM (is-a)</td>
+                </tr>
+                <tr>
+                    <td><strong>Acoplamento</strong></td>
+                    <td>Baixo (componentes independentes)</td>
+                    <td>Alto (classes fortemente ligadas)</td>
+                </tr>
+                <tr>
+                    <td><strong>Flexibilidade</strong></td>
+                    <td>Alta (fácil trocar componentes)</td>
+                    <td>Baixa (dificuldade em modificar hierarquia)</td>
+                </tr>
+                <tr>
+                    <td><strong>Reuso</strong></td>
+                    <td>Reuso por combinação</td>
+                    <td>Reuso por extensão</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2><span class="icon">📚</span> Exemplo Prático: Sistema de Livros</h2>
+            
+            <p>Vamos explorar o exemplo mencionado: <strong>Livros são agregações de capítulos, capítulos são agregações de seções, seções são agregações de texto…</strong></p>
+
+            <div class="hierarchy">
+                <div class="hierarchy-level">
+                    <div class="hierarchy-item">Livro</div>
+                </div>
+                <div class="hierarchy-arrow">↓</div>
+                <div class="hierarchy-level">
+                    <div class="hierarchy-item">Capítulo 1</div>
+                    <div class="hierarchy-item">Capítulo 2</div>
+                    <div class="hierarchy-item">Capítulo 3</div>
+                </div>
+                <div class="hierarchy-arrow">↓</div>
+                <div class="hierarchy-level">
+                    <div class="hierarchy-item">Seção 1.1</div>
+                    <div class="hierarchy-item">Seção 1.2</div>
+                    <div class="hierarchy-item">Seção 2.1</div>
+                </div>
+                <div class="hierarchy-arrow">↓</div>
+                <div class="hierarchy-level">
+                    <div class="hierarchy-item">Parágrafo</div>
+                    <div class="hierarchy-item">Parágrafo</div>
+                    <div class="hierarchy-item">Parágrafo</div>
+                </div>
+            </div>
+
+            <h3>Implementação em Código</h3>
+            
+            <div class="code-block">
+                <span class="comment"># CLASSES COMPONENTES (as partes)</span><br>
+                <span class="keyword">class</span> <span class="class-name">Paragrafo</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">__init__</span>(<span class="attribute">self</span>, texto):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.texto = texto<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">exibir</span>(<span class="attribute">self</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="attribute">f"</span>{<span class="attribute">self</span>.texto}<span class="attribute">"</span>)<br>
+                <br>
+                <span class="keyword">class</span> <span class="class-name">Secao</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">__init__</span>(<span class="attribute">self</span>, titulo):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.titulo = titulo<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.paragrafos = []  <span class="comment"># Composição: Seção TEM parágrafos</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">adicionar_paragrafo</span>(<span class="attribute">self</span>, texto):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;paragrafo = <span class="class-name">Paragrafo</span>(texto)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.paragrafos.append(paragrafo)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">exibir</span>(<span class="attribute">self</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="attribute">f"</span>\n<span class="attribute">=== </span>{<span class="attribute">self</span>.titulo}<span class="attribute"> ==="</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> p <span class="keyword">in</span> <span class="attribute">self</span>.paragrafos:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p.exibir()<br>
+                <br>
+                <span class="keyword">class</span> <span class="class-name">Capitulo</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">__init__</span>(<span class="attribute">self</span>, titulo, numero):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.titulo = titulo<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.numero = numero<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.secoes = []  <span class="comment"># Composição: Capítulo TEM seções</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">adicionar_secao</span>(<span class="attribute">self</span>, titulo_secao):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;secao = <span class="class-name">Secao</span>(titulo_secao)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.secoes.append(secao)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> secao  <span class="comment"># Retorna para adicionar parágrafos</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">exibir</span>(<span class="attribute">self</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="attribute">f"</span>\n<span class="attribute">Capítulo </span>{<span class="attribute">self</span>.numero}<span class="attribute">: </span>{<span class="attribute">self</span>.titulo}<span class="attribute">"</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> s <span class="keyword">in</span> <span class="attribute">self</span>.secoes:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;s.exibir()<br>
+                <br>
+                <span class="comment"># CLASE PRINCIPAL (o todo)</span><br>
+                <span class="keyword">class</span> <span class="class-name">Livro</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">__init__</span>(<span class="attribute">self</span>, titulo, autor):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.titulo = titulo<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.autor = autor<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.capitulos = []  <span class="comment"># Composição: Livro TEM capítulos</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">adicionar_capitulo</span>(<span class="attribute">self</span>, titulo, numero):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;capitulo = <span class="class-name">Capitulo</span>(titulo, numero)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.capitulos.append(capitulo)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">return</span> capitulo  <span class="comment"># Retorna para adicionar seções</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">exibir</span>(<span class="attribute">self</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="attribute">f"</span>\n<span class="attribute">📖 </span>{<span class="attribute">self</span>.titulo}<span class="attribute"> - </span>{<span class="attribute">self</span>.autor}<span class="attribute">"</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="attribute">"="</span>*50)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">for</span> c <span class="keyword">in</span> <span class="attribute">self</span>.capitulos:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;c.exibir()<br>
+                <br>
+                <span class="comment"># USANDO A COMPOSIÇÃO</span><br>
+                <span class="comment"># Criando um livro completo através da composição</span><br>
+                meu_livro = <span class="class-name">Livro</span>(<span class="attribute">"Aprendendo POO"</span>, <span class="attribute">"João Dev"</span>)<br>
+                <br>
+                <span class="comment"># Adicionando capítulos (composição)</span><br>
+                cap1 = meu_livro.adicionar_capitulo(<span class="attribute">"Introdução à Composição"</span>, 1)<br>
+                cap2 = meu_livro.adicionar_capitulo(<span class="attribute">"Composição vs Herança"</span>, 2)<br>
+                <br>
+                <span class="comment"># Adicionando seções aos capítulos (composição)</span><br>
+                secao1_1 = cap1.adicionar_secao(<span class="attribute">"O que é Composição?"</span>)<br>
+                secao1_2 = cap1.adicionar_secao(<span class="attribute">"Vantagens"</span>)<br>
+                <br>
+                <span class="comment"># Adicionando parágrafos às seções (composição)</span><br>
+                secao1_1.adicionar_paragrafo(<span class="attribute">"Composição é um conceito fundamental..."</span>)<br>
+                secao1_1.adicionar_paragrafo(<span class="attribute">"Diferente da herança, na composição..."</span>)<br>
+                secao1_2.adicionar_paragrafo(<span class="attribute">"A composição oferece maior flexibilidade..."</span>)<br>
+                <br>
+                <span class="comment"># Exibindo o livro completo</span><br>
+                meu_livro.exibir()
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span class="icon">💡</span> Vantagens da Composição</h2>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🔧</div>
+                    <h3>Flexibilidade</h3>
+                    <p>Componentes podem ser facilmente trocados ou modificados sem afetar o todo.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">🧱</div>
+                    <h3>Modularidade</h3>
+                    <p>Cada componente é independente e pode ser desenvolvido/testado separadamente.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">🔗</div>
+                    <h3>Baixo Acoplamento</h3>
+                    <p>As classes não dependem diretamente umas das outras, apenas das interfaces.</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">♻️</div>
+                    <h3>Reutilização</h3>
+                    <p>Componentes podem ser reutilizados em diferentes contextos.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span class="icon">🚗</span> Exemplo do Mundo Real: Sistema de Carro</h2>
+            
+            <div class="composition-visual">
+                <div class="composed-item">
+                    <strong>Carro</strong><br>
+                    (classe principal)
+                </div>
+                <div class="composition-arrow">← Composto por</div>
+                <div class="composed-item">
+                    <strong>Motor</strong><br>
+                    (componente)
+                </div>
+                <div class="composition-arrow">+</div>
+                <div class="composed-item">
+                    <strong>Rodas</strong><br>
+                    (4 componentes)
+                </div>
+                <div class="composition-arrow">+</div>
+                <div class="composed-item">
+                    <strong>Bancos</strong><br>
+                    (componentes)
+                </div>
+            </div>
+
+            <div class="code-block">
+                <span class="keyword">class</span> <span class="class-name">Motor</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">__init__</span>(<span class="attribute">self</span>, potencia):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.potencia = potencia<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.ligado = <span class="keyword">False</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">ligar</span>(<span class="attribute">self</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.ligado = <span class="keyword">True</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">print</span>(<span class="attribute">"Motor ligado!"</span>)<br>
+                <br>
+                <span class="keyword">class</span> <span class="class-name">Roda</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">__init__</span>(<span class="attribute">self</span>, pressao):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.pressao = pressao<br>
+                <br>
+                <span class="keyword">class</span> <span class="class-name">Carro</span>:<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">__init__</span>(<span class="attribute">self</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment"># COMPOSIÇÃO: Carro TEM UM motor e 4 rodas</span><br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.motor = <span class="class-name">Motor</span>(<span class="attribute">"2.0 Turbo"</span>)<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.rodas = [<span class="class-name">Roda</span>(32) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="keyword">range</span>(4)]<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="keyword">def</span> <span class="method">ligar_carro</span>(<span class="attribute">self</span>):<br>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="attribute">self</span>.motor.ligar()  <span class="comment"># Delega para o componente Motor</span><br>
+                <br>
+                <span class="comment"># Uso</span><br>
+                meu_carro = <span class="class-name">Carro</span>()<br>
+                meu_carro.ligar_carro()  <span class="comment"># "Motor ligado!"</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2><span class="icon">🎯</span> Quando Usar Composição?</h2>
+            
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">🤝</div>
+                    <h3>Relação "TEM UM"</h3>
+                    <p>Quando uma classe contém ou é formada por outras classes</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">🔄</div>
+                    <h3>Componentes Mutáveis</h3>
+                    <p>Quando partes do objeto precisam ser trocadas dinamicamente</p>
+                </div>
+                
+                <div class="benefit-card">
+                    <div class="benefit-icon">🏗️</div>
+                    <h3>Sistemas Complexos</h3>
+                    <p>Para construir sistemas a partir de componentes menores e reutilizáveis</p>
+                </div>
+            </div>
+            
+            <div class="warning">
+                <p><strong>Princípio de Preferência por Composição:</strong> Na dúvida entre herança e composição, prefira composição. Ela geralmente resulta em designs mais flexíveis e manteníveis.</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>A composição permite construir sistemas complexos como se fossem "peças de Lego" - cada componente independente se encaixa para formar um todo coerente! 🧱</p>
+        </footer>
+    </div>
+</body>
+</html>
